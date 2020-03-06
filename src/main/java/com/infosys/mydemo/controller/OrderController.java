@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,14 +32,14 @@ public class OrderController {
 	}
 	
 	@GetMapping("/allData")
-	public List<OrderWithData> getOrderAllData(){
-		List<OrderWithData> result;
+	public ResponseEntity getOrderAllData(){
 		try {
-			result = repo.orderWithDescription();
+			return ResponseEntity.ok(repo.orderWithDescription());
+//			return new ResponseEntity<List<OrderWithData>>(repo.orderWithDescription(), HttpStatus.OK);
 		} catch (Exception e) {
-			result = new ArrayList<OrdersRepo.OrderWithData>();
+			return ResponseEntity.noContent().build();
+//			return new ResponseEntity<List<OrderWithData>>(new ArrayList<OrdersRepo.OrderWithData>(), HttpStatus.NO_CONTENT);
 		}
-		return result;
 	}
 	
 	@GetMapping("/{id}")
